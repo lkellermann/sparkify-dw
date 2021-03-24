@@ -1,0 +1,23 @@
+AWS:
+  KEY: ASIA5HGP2JRR6Y7LL36Q
+  SECRET: 1yENJ1lisj3EX6OQ0iJu8y33qGRxklprB9H4zQX/
+  SESSION_TOKEN: FwoGZXIvYXdzELf//////////wEaDIkrmEqXX0sQtHf+EiLVAXs39QQq7azf0RkMbksF5bYAs0e6zKQR7E/m2CPVtF2mzMJpi+OERZwiydc8gEoq5yI9PBzWAwdwArfuGBTfU0lv0KRxbxJd9SeLFUw7JyZcJINzkB0+35P5oyaUKLPJA7iRQz+PRm6tMxOCFCPr55Am7QrpFoybm2hk3kRfNkIlVWYIvUOgKYiTvAWVBigEEK4Fo+pWab8EKCVVkVK+FBTfGaeTzg+DIvowUtNDBLUjoWNFj3+8kFIeAhbnpcUT1v6NUpm1kM06LrW1zoX08TJQh8gKZije4u6CBjItOHrkjhmwf2cgH71Uyj5Imzfens3PBsioKaCERyVHfdJbI0Yp6uC0HAFaXKBf
+  REGION: us-east-1 # Choose the cheapest region
+
+CLUSTER:
+    CLUSTER_TYPE: multi-node
+    NUM_NODES: 2
+    NODE_TYPE: dc2.large
+    CLUSTER_IDENTIFIER: sparkify-redshift # This is the name of your cluster.
+    CLUSTER_PORT: 5439
+    HOST: hostname
+    CLUSTER_DB_NAME: sparkifydb
+    DB_USER: sparkify
+    DB_PASSWORD: Spark1fy
+    
+IAM_ROLE_NAME: MyAmazonS3ReadOnlyAccess
+
+S3:
+  LOG_DATA: s3://udacity-dend/log_data
+  LOG_JSONPATH: s3://udacity-dend/log_json_path.json
+  SONG_DATA: s3://udacity-dend/song_data
