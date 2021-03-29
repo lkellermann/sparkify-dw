@@ -1,8 +1,6 @@
 from aws.iam_role import IAMRole
 from aws.resources import EC2
-#from aws.resources import S3
 from aws.client import RedShift
-from typing import Union
 from time import sleep
 import botocore.exceptions
 
@@ -13,7 +11,6 @@ class Cluster(EC2, IAMRole, RedShift):
     def __init__(self,
                  key_id: str,
                  secret: str,
-                 token: str,
                  region: str,
                  CLUSTER_IDENTIFIER: str
                  ) -> None:
@@ -25,24 +22,19 @@ class Cluster(EC2, IAMRole, RedShift):
             region (str): Region name.
             s3_role_name (str): Region name.
         """
-        IAMRole.__init__(self, key_id, secret, token, region)
-       # S3.__init__(self, key_id, secret, token, region)
-        EC2.__init__(self, key_id, secret, token, region)
-        RedShift.__init__(self, key_id, secret, token, region)
-
+        IAMRole.__init__(self, key_id, secret,  region)
+        EC2.__init__(self, key_id, secret, region)
+        RedShift.__init__(self, key_id, secret, region)
         self.CLUSTER_IDENTIFIER = CLUSTER_IDENTIFIER
 
     def create_cluster(self,
                        CLUSTER_TYPE: str,
                        NUM_NODES: int,
                        NODE_TYPE: str,
-                       # CLUSTER_IDENTIFIER: str,
                        DBASE: str,
                        DBASE_USER: str,
                        DBASE_PWD: int,
-                       IAM_ROLE_NAME: str
-
-                       ):
+                       IAM_ROLE_NAME: str) -> None:
 
         # Get IAMRole for S3:
         arn = self.read_only(IAM_ROLE_NAME)
@@ -54,7 +46,9 @@ class Cluster(EC2, IAMRole, RedShift):
 
         try:
             # Creates a redshift client:
-            response = self.redshift().create_cluster(
+            client = self.redshift()
+
+            response = client.create_cluster(
                 # Cluster Hardware setup:
                 ClusterType=CLUSTER_TYPE,
                 NodeType=NODE_TYPE,
@@ -73,13 +67,9 @@ class Cluster(EC2, IAMRole, RedShift):
 
             while self.cluster_properties['ClusterStatus'] != 'available':
                 print('Waiting cluster to be created...')
-                sleep(30)
+                sleep(60)
 
             print('Cluster available!')
-
-            temp_user = cluster_creds['DbUser']
-            temp_pswd = cluster_creds['DbPassword']
-            print(f'temp_user: {temp_user}\ntemp_pswd: {temp_pswd}')
 
         except botocore.exceptions.ClientError as e:
             if e.response['Error']['Code'] == 'ClusterAlreadyExists':
@@ -87,15 +77,6 @@ class Cluster(EC2, IAMRole, RedShift):
                     f'Cluster {self.CLUSTER_IDENTIFIER} already exists. Keep working or create a new cluster.')
             else:
                 raise e
-
-        cluster_creds = self.redshift().get_cluster_credentials(
-            DbUser=DBASE_USER, DbName=DBASE, ClusterIdentifier=self.CLUSTER_IDENTIFIER, AutoCreate=False)
-
-        temp_user = cluster_creds['DbUser']
-        temp_pswd = cluster_creds['DbPassword']
-        print(f'temp_user: {temp_user}\ntemp_pswd: {temp_pswd}')
-        print(f'cluster_creds: {cluster_creds}')
-        return None
 
     # Building cluster_properties attribute.
     @property
@@ -134,22 +115,7 @@ class Cluster(EC2, IAMRole, RedShift):
         except botocore.exceptions.ClientError as e:
             if e.response['Error']['Code'] == 'InvalidPermission.Duplicate':
                 print(
-                    f'The specified rule "peer: 0.0.0.0/0, TCP, from port: 5439, to port: 5439, ALLOW" already exists.')
+                    'The specified rule "peer: 0.0.0.0/0, TCP, \
+                        from port: 5439, to port: 5439, ALLOW" already exists.')
             else:
                 raise e
-        except:
-            InvalidPermission.Duplicate
-
-    @staticmethod
-    def _redshift_properties(properties):
-        keys = ["ClusterIdentifier",
-                "NodeType",
-                "ClusterStatus",
-                "MasterUsername",
-                "DBName",
-                "Endpoint",
-                "NumberOfNodes",
-                'VpcId', ]
-        _data = [(k, v)
-                 for k, v in self.cluster_properties.items() if k in keys]
-        return pd.DataFrame(data=_data, columns=['Key', 'Value'])

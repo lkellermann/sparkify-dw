@@ -1,0 +1,26 @@
+# PynSource Version 1.2
+{'type':'meta', 'info1':'Lorem ipsum dolor sit amet, consectetur adipiscing elit is latin. Comments are saved.'}
+{'type':'umlshape', 'id':'Cluster', 'x':975, 'y':227, 'width':171, 'height':164, 'attrs': 'CLUSTER_IDENTIFIER|Duplicate|cluster_properties', 'meths': '__init__|_redshift_properties|create_cluster|ec2_redshift_connection'}
+{'type':'umlshape', 'id':'RedShift', 'x':1247, 'y':15, 'width':90, 'height':79, 'attrs': '', 'meths': '__init__|redshift'}
+{'type':'umlshape', 'id':'IAMRole', 'x':955, 'y':592, 'width':80, 'height':104, 'attrs': 'iam', 'meths': '__init__|read_only'}
+{'type':'umlshape', 'id':'EC2', 'x':1559, 'y':547, 'width':66, 'height':79, 'attrs': '', 'meths': '__init__|ec2'}
+{'type':'umlshape', 'id':'ClientFactory', 'x':478, 'y':574, 'width':140, 'height':64, 'attrs': '', 'meths': 'client'}
+{'type':'umlshape', 'id':'CreateClient', 'x':482, 'y':398, 'width':130, 'height':64, 'attrs': '', 'meths': 'client'}
+{'type':'umlshape', 'id':'Client', 'x':494, 'y':84, 'width':87, 'height':149, 'attrs': 'client_type|key_id|region|secret', 'meths': '__init__|client'}
+{'type':'umlshape', 'id':'IAM', 'x':758, 'y':502, 'width':66, 'height':79, 'attrs': '', 'meths': '__init__|iam'}
+{'type':'umlshape', 'id':'ResourceFactory', 'x':1498, 'y':15, 'width':160, 'height':64, 'attrs': '', 'meths': 'resource'}
+{'type':'umlshape', 'id':'CreateResource', 'x':1497, 'y':125, 'width':150, 'height':64, 'attrs': '', 'meths': 'resource'}
+{'type':'umlshape', 'id':'Resource', 'x':1528, 'y':279, 'width':101, 'height':149, 'attrs': 'key_id|region|resource_type|secret', 'meths': '__init__|resource'}
+{'type':'umlshape', 'id':'S3', 'x':1761, 'y':305, 'width':66, 'height':79, 'attrs': '', 'meths': '__init__|s3'}
+{'type':'edge', 'id':'Cluster_to_RedShift', 'source':'Cluster', 'target':'RedShift', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'Cluster_to_IAMRole', 'source':'Cluster', 'target':'IAMRole', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'Cluster_to_EC2', 'source':'Cluster', 'target':'EC2', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'RedShift_to_Client', 'source':'RedShift', 'target':'Client', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'Client_to_CreateClient', 'source':'Client', 'target':'CreateClient', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'CreateClient_to_ClientFactory', 'source':'CreateClient', 'target':'ClientFactory', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'IAM_to_Client', 'source':'IAM', 'target':'Client', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'IAMRole_to_IAM', 'source':'IAMRole', 'target':'IAM', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'Resource_to_CreateResource', 'source':'Resource', 'target':'CreateResource', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'EC2_to_Resource', 'source':'EC2', 'target':'Resource', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'S3_to_Resource', 'source':'S3', 'target':'Resource', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'CreateResource_to_ResourceFactory', 'source':'CreateResource', 'target':'ResourceFactory', 'uml_edge_type': 'generalisation'}

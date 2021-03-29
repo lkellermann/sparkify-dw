@@ -1,13 +1,9 @@
-from abc import ABCMeta, abstractmethod
 import boto3
+from abc import ABCMeta, abstractmethod
 
 
 class ClientFactory(metaclass=ABCMeta):
-    """Metaclass to create Clients for AWS.
-
-    Args:
-        metaclass ([type], optional): [description]. Defaults to ABCMeta.
-    """
+    """Metaclass to create Clients for AWS."""
     @abstractmethod
     def client(self):
         pass
@@ -17,13 +13,12 @@ class CreateClient(ClientFactory):
     """Create Clients for AWS."""
 
     def client(self) -> object:
-        """[summary]
+        """Abstract product method to create Clients.
 
         Returns:
-            object: [description]
+            object: client object.
         """
-
-        return Client()
+        return Client
 
 
 class Client(CreateClient):
@@ -32,7 +27,6 @@ class Client(CreateClient):
     def __init__(self,
                  key_id: str,
                  secret: str,
-                 token: str,
                  region: str,
                  client_type: str) -> None:
         """Object constructor.
@@ -45,11 +39,10 @@ class Client(CreateClient):
         """
         self.key_id = key_id
         self.secret = secret
-        self.token = token
         self.region = region
         self.client_type = client_type
 
-    def client(self) -> object:
+    def client(self) -> boto3.session.Session.client:
         """Method to create an AWS client.
 
         Returns:
@@ -59,7 +52,6 @@ class Client(CreateClient):
         client = boto3.client(self.client_type,
                               aws_access_key_id=self.key_id,
                               aws_secret_access_key=self.secret,
-                              aws_session_token=self.token,
                               region_name=self.region,
                               )
         return client
@@ -71,7 +63,6 @@ class RedShift(Client):
     def __init__(self,
                  key_id: str,
                  secret: str,
-                 token: str,
                  region: str,
                  ) -> None:
         """Class constructor.
@@ -84,16 +75,14 @@ class RedShift(Client):
         Client.__init__(self,
                         key_id,
                         secret,
-                        token,
                         region,
                         client_type='redshift')
-        return None
 
-    def redshift(self) -> object:
-        """Creates a RedShif client object.
+    def redshift(self) -> boto3.session.Session.client:
+        """Creates a RedShift client object.
 
         Returns:
-            object: RedShift client object.
+            boto3.session.Session.client: RedShift client object.
         """
         return self.client()
 
@@ -104,7 +93,6 @@ class IAM(Client):
     def __init__(self,
                  key_id: str,
                  secret: str,
-                 token: str,
                  region: str,
                  ) -> None:
         """Class constructor.
@@ -117,15 +105,13 @@ class IAM(Client):
         Client.__init__(self,
                         key_id,
                         secret,
-                        token,
                         region,
                         client_type='iam')
-        return None
 
-    def iam(self) -> object:
+    def iam(self) -> boto3.session.Session.client:
         """Creates an IAM object.
 
         Returns:
-            object: IAM client object.
+            boto3.session.Session.client: IAM client object.
         """
         return self.client()
