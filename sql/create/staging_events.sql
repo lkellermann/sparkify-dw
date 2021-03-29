@@ -1,0 +1,20 @@
+create table if not exists staging_events(
+    artist              varchar,
+    auth                varchar,
+    firstName           varchar,
+    gender              varchar,
+    itemInSession       smallint,
+    lastName            varchar,
+    length              real,
+    level               varchar,
+    location            varchar,
+    method              varchar,
+    page                varchar,
+    registration        real,
+    sessionId           int,
+    song                varchar,
+    status              int,
+    ts                  timestamp,
+    userAgent           varchar,
+    userId              int
+);
