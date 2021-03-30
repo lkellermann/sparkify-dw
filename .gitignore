@@ -1,0 +1,17 @@
+*.gz
+*.cfg
+*.yaml
+dev*
+*~
+*-test.py
+*__pycache__
+*.ipynb_checkpoints
+*.json
+aws/dist*
+*.so
+aws/install*
+*user.csv
+*install
+*.ipynb
+demo/*
+*.results
