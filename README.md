@@ -226,6 +226,7 @@ help(classObject)
 ## 🚀 **Deployment** <a name = "deployment"></a>
 ---
 <small><font color = 'blue'> [📝 Table of Contents](#table-of-contents) </font></a></small>
+
 You should automate the execution with a task scheduler. This will depend on the operational system where the scripts will run.  
 
 ## ⛏️ **Built Using** <a name = "built_using"></a>
