@@ -1,0 +1,10 @@
+[CLUSTER]
+host = sparkify-redshift.************.us-west-2.redshift.amazonaws.com
+db_name = s*********w
+db_user = s*************r
+db_password = S*************r
+db_port = 5439
+
+[IAM_ROLE]
+arn = arn:aws:iam::***********:role/AmazonS3ReadOnlyAccess
+

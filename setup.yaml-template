@@ -1,0 +1,16 @@
+AWS:
+  KEY: A*****************C2                         # User KEY
+  SECRET: Y**************************************C  # User SECRET
+  REGION: us-west-2                                 # Choose the region near to our customers.
+
+CLUSTER:
+    CLUSTER_TYPE: multi-node
+    NUM_NODES: 2
+    NODE_TYPE: dc2.large
+    CLUSTER_IDENTIFIER: sparkify-redshift     # This is the name of your cluster.
+    CLUSTER_PORT: 5439
+    CLUSTER_DB_NAME: sparkifydw
+    DB_USER: s*************r                  # This is the master username.
+    DB_PASSWORD: S*************r              # This is the master password.
+    
+IAM_ROLE_NAME: AmazonS3ReadOnlyAccess
