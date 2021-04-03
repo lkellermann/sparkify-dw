@@ -8,26 +8,39 @@ myProjects <<MIT>>
 import psycopg2
 import configparser
 from datetime import datetime
-from sql_queries import copy_table_queries, insert_table_queries, rc_queries
+from sql_queries import create_table_queries, copy_table_queries, insert_table_queries, rc_queries
 
 
-def load_staging_tables(cur) -> None:
+def create_tables(cur: object) -> None:
     """Method to create staging tables
 
     Args:
-        cur ([type]): psycopg cursor to execute queries.
+        cur (object): psycopg cursor to execute queries.
+    """
+    for query in create_table_queries:
+        print(
+            f'Creating table:\n############\nExecuting query:\n{query}\n###########\n\n')
+        cur.execute(query)
+
+
+def load_staging_tables(cur: object, role_arn: str) -> None:
+    """Method to create staging tables
+
+    Args:
+        cur (object): psycopg cursor to execute queries.
+        role_arn (str): IAM role to copy tables.
     """
     for query in copy_table_queries:
         print(
             f'Copying table:\n############\nExecuting query:\n{query}\n###########\n\n')
-        cur.execute(query)
+        cur.execute(query.format(role_arn=role_arn))
 
 
-def insert_tables(cur) -> None:
+def insert_tables(cur: object) -> None:
     """Method to insert data into provided tables tables.
 
     Args:
-        cur ([type]): psycopg2 cursor object to execute queries.
+        cur (object): psycopg2 cursor object to execute queries.
     """
     for query in insert_table_queries:
         print(
@@ -35,12 +48,12 @@ def insert_tables(cur) -> None:
         cur.execute(query)
 
 
-def check(cur, start_time):
+def check(cur: object, start_time: datetime):
     """Method to check the number of rows inserted on tables in this project.
 
     Args:
-        cur ([type]): psycopg2 cursor object to execute queries.
-        start_time ([type]): datetime object of time when etl.py started.
+        cur (object): psycopg2 cursor object to execute queries.
+        start_time (datetime): time when etl.py started.
     """
     for query in rc_queries:
         now = datetime.now()
@@ -62,7 +75,7 @@ def main():
     config = configparser.ConfigParser()
     config.read('dwh.cfg')
 
-    # Try to connect to cluster
+    # Connect to cluster
     con = psycopg2.connect("host={} \
                             dbname={} \
                             user={} \
@@ -72,11 +85,13 @@ def main():
     con.set_session(autocommit=True)
     cur = con.cursor()
 
-    load_staging_tables(cur)
+    create_tables(cur)
+    load_staging_tables(cur, config['IAM_ROLE']['arn'])
     insert_tables(cur)
     endpoint = config['CLUSTER']['HOST']
+
     print(f'DW created on {endpoint}!')
-    print('Checking results..\n')
+    print('Checking results...\n')
 
     check(cur, start_time)
 
